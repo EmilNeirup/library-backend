@@ -1,6 +1,7 @@
 using libraryAPI.Models;
 using libraryAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace libraryAPI.Controllers
@@ -42,7 +43,7 @@ namespace libraryAPI.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Book bookIn)
+        public IActionResult Update(string id, bool InStock, string BorrowerId, string BorrowerName, string BorrowerStartDate, string BorrowerEndDate)
         {
             var book = _bookService.Get(id);
 
@@ -50,8 +51,17 @@ namespace libraryAPI.Controllers
             {
                 return NotFound();
             }
+            
+            Borrower newBorrower = new Borrower();
+            newBorrower.Id = BorrowerId;
+            newBorrower.Name = BorrowerName;
+            newBorrower.StartDate = BorrowerStartDate;
+            newBorrower.EndDate = BorrowerEndDate;
 
-            _bookService.Update(id, bookIn);
+            book.BorrowerList.Add(newBorrower);
+            book.InStock = InStock;
+
+            _bookService.Update(book);
 
             return NoContent();
         }

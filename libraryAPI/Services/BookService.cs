@@ -29,8 +29,8 @@ namespace libraryAPI.Services
             return book;
         }
 
-        public void Update(string id, Book bookIn) =>
-            _books.ReplaceOne(book => book.Id == id, bookIn);
+        public void Update(Book bookIn) =>
+            _books.ReplaceOne(book => book.Id == bookIn.Id, bookIn);
 
         public void Remove(Book bookIn) =>
             _books.DeleteOne(book => book.Id == bookIn.Id);
